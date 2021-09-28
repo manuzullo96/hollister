@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+use App\Models\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,3 +43,22 @@ Route::get('hola/{name}', function($name){
     return '<h1> Hola '.$name.'</h1>';
 
 });
+
+Route::get('portfolio', function(){
+
+    $user= User::with('skill')->latest()->get();
+    //$skill =Skill::latest()_>get();
+    $user = User::latest()->get();
+
+
+   // dd($user);
+
+
+    return view('portfolio')->with('user', $user[0]);
+    //return view('portfolio', compact('user', 'skill'));
+
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
